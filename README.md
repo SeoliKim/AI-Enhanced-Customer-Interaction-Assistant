@@ -10,11 +10,11 @@
     2. Set Up the Virtual Environment. Open the terminal and activate the virtual environment by running:
        `source env/bin/activate`. Install the required packages by running: `pip install -r requirements.txt`.
 
-    3. Navigate to the cli directory. Start the chatbot by running: `python3 chat_cli.py`. Be patient - it takes a little while before
-       it starts running.
+    3. Navigate to the cli directory. Start the chatbot by running: `python3 chat_cli.py`. 
 
     5. Interact with the Chatbot. Type your queries into the terminal. The chatbot will respond with the appropriate agent to handle your 
-       request.
+       request. Be patient - it takes a little while before it responds.
+
 
     Example Queries:
 
