@@ -8,7 +8,7 @@ from backend.main import CustomerAssistant
 
 def main():
     assistant = CustomerAssistant()
-    print("Welcome to the Customer Assistant Chatbot!")
+    print("Welcome to the Customer Assistant Chatbot! How may I hep you?")
     print("Type 'quit' to exit.")
     
     while True:
@@ -18,7 +18,7 @@ def main():
 
         try:
             response = assistant.process_user_input(user_input)
-            print(f"Agent: {response}")
+            #print(f"Agent: {response}")
         except Exception as e:
             print(f"An error occurred: {str(e)}")
         

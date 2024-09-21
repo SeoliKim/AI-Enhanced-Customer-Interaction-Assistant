@@ -6,7 +6,7 @@ from langchain_community.llms import LlamaCpp
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_core.runnables import RunnableSequence
-import os
+#from order_tracking import create_order_tracking_agent
 
 class AgentState(TypedDict):
     messages: Annotated[list[HumanMessage], "The messages in the conversation"]
@@ -39,23 +39,26 @@ Classification:"""
         
         #agent_name = self.parse_response(response)
         #print(f"Debug - Parsed agent name: {agent_name}")
-        return response
+        #return response
+        return response  # Return the raw LLM response
 
-    """def parse_response(self, response: str) -> str:
+    def parse_response(self, response: str) -> str:
         response = response.strip().lower()
         if "ordertrackingagent" in response:
-            return "OrderTrackingAgent"
+            return "order_tracking"
         elif "productrecommendationagent" in response:
-            return "ProductRecommendationAgent"
+            return "product_recommendation"
         elif "visualsearchagent" in response:
-            return "VisualSearchAgent"
+            return "visual_search"
         else:
-            return "DefaultAgent"""
-
+            return "router"
+        
 
 
 def create_router():
     return RouterAgent()
+
+
 
 # Example usage
 if __name__ == "__main__":
