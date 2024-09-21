@@ -4,7 +4,7 @@
 1. [Get Started](#get-started)
    
     Clone this repository, then follow the steps below:
-    1. Install Llama-2-7B Model localy. Download the `llama-2-7b.Q4_K_M.gguf` model from the Hugging Face model hub.
+    1. Install Llama-2-7B Model locally. Download the `llama-2-7b.Q4_K_M.gguf` model from the Hugging Face model hub.
         Move the downloaded model to the main directory of this project.
 
     2. Set Up the Virtual Environment. Open the terminal and activate the virtual environment by running:
