@@ -1,15 +1,19 @@
 from backend.agents.router import create_router, AgentState
 from backend.agents.order_tracking import create_order_tracking_agent
+from backend.agents.response_generator import create_response_generator
+from backend.assistant.assistant import Assistant
 from langchain_core.messages import HumanMessage, AIMessage
 
+    
 class CustomerAssistant:
     def __init__(self):
         self.router = create_router()
         self.order_tracking = create_order_tracking_agent()
+        # self.response_generator = create_response_generator()
         # Initialize other agents here (we'll implement these later)
         # self.product_recommendation = ProductRecommendationAgent()
         # self.visual_search = VisualSearchAgent()
-
+        
     def process_user_input(self, user_input: str) -> str:
         state = AgentState(messages=[HumanMessage(content=user_input)], next_agent="router")
         
@@ -35,6 +39,12 @@ class CustomerAssistant:
             
             else:
                 return f"Unhandled agent: {state['next_agent']}"
+    
+    def create_assistant_graph(self):
+        assistant = Assistant()
+        assistant_graph= assistant.create_graph()
+        return assistant_graph
+        
 
 # Example usage
 if __name__ == "__main__":
