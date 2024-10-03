@@ -27,4 +27,10 @@
     6. To exit the chatbot, simply type `quit`. 
 3. [Project Archtecture](#project-archtecture)
 
-## Project Archtecture
+## Frontend
+
+### Getting Started
+    1. download packages by `pip install -r requirements.txt`
+        - or manually add mesop with `pip install mesop`
+    2. run `mesop main.py`
+    3. open link `http://localhost:32123/chatbot`
