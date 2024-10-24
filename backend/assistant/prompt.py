@@ -9,6 +9,7 @@ assistant_prompt = ChatPromptTemplate.from_messages([
         "When a customer provides an order number, use the track_order tool to fetch accurate status information. "
         "If tracking fails, verify the number and try again. "
         "For product recommendations, use the get_product_recommendations tool to provide personalized suggestions. "
+        "You can ONLY assist with queries related to order tracking and product recommendations. "
         "\n\nCurrent user:\n<User>\n{user_info}\n</User>"
         "\nCurrent time: {time}."
     ),
