@@ -25,7 +25,7 @@ _EXAMPLE_USER_QUERIES = (
 _CHAT_MAX_WIDTH = "800px"
 _MOBILE_BREAKPOINT = 640
 
-# assistant = CustomerAssistant()
+assistant = CustomerAssistant()
 
 
 @dataclass(kw_only=True)
@@ -53,36 +53,17 @@ class State:
 
 
 def respond_to_chat(input: str, history: list[ChatMessage]):
-    # state = me.state(State)
-    # try:
-    #     state.in_progress = True
-    #     yield
-    #     response = assistant.process_user_input(input)
-    #     state.in_progress = False
-    #     yield
-    #     time.sleep(0.3)
-    #     yield response + " "
-    # except:
-    #     time.sleep(0.3)
-    #     yield "error occurs" + " "
-    """Displays random canned text.
-
-        Edit this function to process messages with a real chatbot/LLM.
-    """
-    lines = [
-        "API running simulation", 
-        "bdasj zbfkjsbdfhns dzbfhnjbad bddhkhsdf sadfnanfjkdsbfjkbsjkfbsjdkfbsjkdfb jksd fanjernqjwnjrka ndjkalnandlajfkdjkpfojsdpgmkfldngb.",
-        "bdasjzbfkjsbdfhn sd zbfhnjbadbddhkhsdf sadfnanfjkdsbfjkbsjkfbsjdkfbsjkdfbjksd fanjernqjwnjrkandjkalnandlajfkdjkpfojsdpgmkfldngb.",
-        "bdasjzbfkjsbdfhnsdz bfhnjbadbddhkhsdf sadfnanfjkdsbfjkbsjkfbsjdkfbsjkdfbjksd fanjernqjwnjrkandj alnandlajfkdjkpfojsdpgmkfldngb.",
-        "bdasjzbfkjsbdfh nsdzbfhnjba dbddhkhsdf sadfnanfjkdsbfjkbsjkfbsjdkf bsjkdfbjksd fanjernqjwnjrkandjkalnandl ajfkdjkpfojsdpgmkfldngb.",
-        "bdasjzbfkjsbdfhnsdzbfhnjbadbddhkhsdf sadfnanfjkdsbfjkbsjkfbsjdkfbsj kdfbjksd fanjer nqjwnjrkandj kalnandlajfkdjkpfojsdpgmkfldngb.",
-        "bdasjzbfkjsbdfhnsdzbfhnjbadbddhkhsdf sadfnanfjkdsbfjkbsjkfbsjdkfbsjkdfbjksd fanjernqjwnjrkandjkalnandlajfkdjkpfojsdpgmkfldngb.",
-    ]
-
-    for line in random.sample(lines, random.randint(3, len(lines) - 1)):
+    state = me.state(State)
+    try:
+        state.in_progress = True
+        yield ""
+        response = assistant.process_user_input(input)
+        state.in_progress = False
+        print("response: "+response)
         time.sleep(0.3)
-        yield line + " "
-
+        yield response + " "
+    except:
+        yield "error occurs" + " "
 
 def on_load(e: me.LoadEvent):
     me.set_theme_mode("system")
@@ -94,7 +75,6 @@ def on_load(e: me.LoadEvent):
             "https://google.github.io", "https://huggingface.co"]
     ),
     title="Ecommerce Assistant",
-    path="/chatbot",
     on_load=on_load,
 )
 def page():
