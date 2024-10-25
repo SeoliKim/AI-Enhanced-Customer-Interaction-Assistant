@@ -1,7 +1,7 @@
 import sqlite3
 import os
 from langchain_core.tools import tool
-from config.config import Config
+from backend.config.config import Config
 
 @tool
 def track_order(order_number: str) -> str:

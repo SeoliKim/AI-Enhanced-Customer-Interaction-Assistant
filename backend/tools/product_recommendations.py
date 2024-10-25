@@ -2,7 +2,7 @@
 import sqlite3
 from typing import List, Dict, Any
 from langchain_core.tools import tool
-from config.config import Config
+from backend.config.config import Config
 
 @tool
 def get_product_recommendations(user_id: str, category: str = None) -> List[Dict[str, Any]]:

@@ -9,7 +9,7 @@ from typing import Callable, Literal
 
 # Add the parent directory to the Python path to import from backend
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from backend.main import CustomerAssistant
+from backend.main import MainAssistant
 
 Role = Literal["user", "bot"]
 
@@ -25,7 +25,7 @@ _EXAMPLE_USER_QUERIES = (
 _CHAT_MAX_WIDTH = "800px"
 _MOBILE_BREAKPOINT = 640
 
-assistant = CustomerAssistant()
+assistant = MainAssistant()
 
 
 @dataclass(kw_only=True)
@@ -55,15 +55,21 @@ class State:
 def respond_to_chat(input: str, history: list[ChatMessage]):
     state = me.state(State)
     try:
+        print(input)
         state.in_progress = True
         yield ""
-        response = assistant.process_user_input(input)
+        response = assistant.graph.invoke({"messages": [("user", input)]}, assistant.config)
         state.in_progress = False
-        print("response: "+response)
-        time.sleep(0.3)
-        yield response + " "
-    except:
-        yield "error occurs" + " "
+        msg=response["messages"][-1]
+        if hasattr(msg, 'content'):
+            for l in msg.content:
+                time.sleep(0.005)
+                yield(l)
+        elif isinstance(msg, tuple) and len(msg) == 2:
+            yield(msg[1])
+    except Exception as e:
+        print(e)
+        yield ""
 
 def on_load(e: me.LoadEvent):
     me.set_theme_mode("system")
