@@ -8,7 +8,7 @@ from backend.main import CustomerAssistant
 
 def main():
     assistant = CustomerAssistant()
-    print("Welcome to the Customer Assistant Chatbot! How may I hep you?")
+    print("Welcome to the Customer Assistant Chatbot! How may I help you?")
     print("Type 'quit' to exit.")
     
     while True:
