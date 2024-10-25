@@ -285,7 +285,7 @@ def user_message(*, message: ChatMessage):
                 border_radius=10,
                 color=me.theme_var("on-surface-variant"),
                 padding=me.Padding.symmetric(vertical=0, horizontal=10),
-                width="66%",
+                # width="6",
             )
         ):
             me.markdown(message.content)
@@ -322,12 +322,12 @@ def bot_message(*, message_index: int, message: ChatMessage):
                     tooltip="Bad response",
                     on_click=on_click_thumb_down,
                 )
-                icon_button(
-                    key=f"restart-{message_index}",
-                    icon="restart_alt",
-                    tooltip="Regenerate answer",
-                    on_click=on_click_regenerate,
-                )
+                # icon_button(
+                #     key=f"restart-{message_index}",
+                #     icon="restart_alt",
+                #     tooltip="Regenerate answer",
+                #     on_click=on_click_regenerate,
+                # )
 
 
 def chat_input():
