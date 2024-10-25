@@ -16,7 +16,7 @@ def main():
     
     graph = create_customer_support_graph(assistant, tools)
     
-    print("Customer Service Assistant Ready! (Type 'quit' to exit)")
+    print("Hi! I'm your dedicated Customer Service Assistant. How can I help you today?(Type 'quit' to exit)")
     print("-" * 50)
     
     thread_id = str(uuid.uuid4())
