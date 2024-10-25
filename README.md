@@ -12,7 +12,7 @@
 
     3. Navigate to the cli directory. Start the chatbot by running: `python3 chat_cli.py`. 
 
-    5. Interact with the Chatbot. Type your queries into the terminal. The chatbot will respond with the appropriate agent to handle your 
+    4. Interact with the Chatbot. Type your queries into the terminal. The chatbot will respond with the appropriate agent to handle your 
        request. Be patient - it takes a little while before it responds.
 
 
@@ -24,6 +24,13 @@
         Suggest a good book
         
     5. For Order Tracking, the chatbot will prompt you for your order number. It will then retrieve and display the order status along with the estimated delivery or arrival date from the database.
+    6. To exit the chatbot, simply type `quit`. 
 3. [Project Archtecture](#project-archtecture)
 
-## Project Archtecture
+## Frontend
+
+### Getting Started
+    1. download packages by `pip install -r requirements.txt`
+        - or manually add mesop with `pip install mesop`
+    2. run `mesop main.py`
+    3. open link `http://localhost:32123/chatbot`
