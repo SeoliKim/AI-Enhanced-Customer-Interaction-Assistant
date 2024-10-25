@@ -1,5 +1,5 @@
 from langchain_core.runnables import Runnable, RunnableConfig
-from models.state import State
+from backend.models.state import State
 
 class Assistant:
     def __init__(self, runnable: Runnable):

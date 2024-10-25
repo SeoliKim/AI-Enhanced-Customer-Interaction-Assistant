@@ -3,7 +3,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import tools_condition, ToolNode
 from langchain_core.messages import ToolMessage
 from langchain_core.runnables import RunnableLambda
-from models.state import State
+from backend.models.state import State
 
 def handle_tool_error(state) -> dict:
     error = state.get("error")
