@@ -1,6 +1,7 @@
 import time
 import os
 import sys
+import base64
 import mesop as me
 import random
 from dataclasses import asdict, dataclass
@@ -34,6 +35,7 @@ class ChatMessage:
 
     role: Role = "user"
     content: str = ""
+    image: me.UploadedFile = None
     edited: bool = False
     # 1 is positive
     # -1 is negative
@@ -44,6 +46,8 @@ class ChatMessage:
 @me.stateclass
 class State:
     input: str
+    uploadedimage: me.UploadedFile
+    inputimage: bool
     output: list[ChatMessage]
     in_progress: bool
     sidebar_expanded: bool = False
@@ -233,18 +237,40 @@ def examples_pane():
             )
         ):
             for index, query in enumerate(_EXAMPLE_USER_QUERIES):
-                with me.box(
-                    key=f"query-{index}",
-                    on_click=on_click_example_user_query,
-                    style=me.Style(
-                        background=me.theme_var("surface-container-highest"),
-                        border_radius=15,
-                        padding=me.Padding.all(20),
-                        cursor="pointer",
-                    ),
-                ):
-                    me.text(query)
-
+                if index <2: 
+                    with me.box(
+                        key=f"query-{index}",
+                        on_click=on_click_example_user_query,
+                        style=me.Style(
+                            background=me.theme_var("surface-container-highest"),
+                            border_radius=15,
+                            padding=me.Padding.all(20),
+                            cursor="pointer",
+                        ),
+                    ):
+                        me.text(query)
+                else:
+                    with me.box(
+                        style=me.Style(
+                                background=me.theme_var("surface-container-highest"),
+                                border_radius=15,
+                                padding=me.Padding.all(20),
+                                cursor="pointer",
+                            ),
+                    ):
+                        me.text(query)
+                        me.content_uploader(
+                            accepted_file_types=["image/jpeg", "image/png"],
+                            on_upload=submit_image,
+                            style=me.Style(
+                                width= "100%",
+                                height="100%"
+                            )
+                        )
+                            
+                         
+                
+                    
 
 def chat_pane():
     state = me.state(State)
@@ -279,18 +305,41 @@ def user_message(*, message: ChatMessage):
             margin=me.Margin.all(20),
         )
     ):
-        with me.box(
-            style=me.Style(
-                background=me.theme_var("surface-container-low"),
-                border_radius=10,
-                color=me.theme_var("on-surface-variant"),
-                padding=me.Padding.symmetric(vertical=0, horizontal=10),
-                # width="6",
-            )
-        ):
-            me.markdown(message.content)
+        if message.image == None:
+            with me.box(
+                style=me.Style(
+                    background=me.theme_var("surface-container-low"),
+                    border_radius=10,
+                    color=me.theme_var("on-surface-variant"),
+                    padding=me.Padding.symmetric(vertical=0, horizontal=10),
+                    # width="6",
+                )
+            ):
+                me.markdown(message.content)
+        else:
+             with me.box(style=me.Style(display="flex", flex_direction="column")):
+                with me.box(
+                style=me.Style(
+                    background=me.theme_var("surface-container-low"),
+                    border_radius=10,
+                    color=me.theme_var("on-surface-variant"),
+                    padding=me.Padding.symmetric(vertical=0, horizontal=10),
+                    # width="6",
+                )
+                ):
+                    if message.image.size:
+                        with me.box(style=me.Style(margin=me.Margin.all(10))):
+                            me.text(f"File name: {message.image.name}")
 
+                        with me.box(style=me.Style(margin=me.Margin.all(10))):
+                            me.image(
+                                src=_convert_contents_data_url(message.image),
+                                style=me.Style(
+                                    width="200px",
+                                    )
+                                )
 
+  
 def bot_message(*, message_index: int, message: ChatMessage):
     with me.box(style=me.Style(display="flex", gap=15, margin=me.Margin.all(20))):
         text_avatar(
@@ -299,7 +348,7 @@ def bot_message(*, message_index: int, message: ChatMessage):
             label=_BOT_AVATAR_LETTER,
         )
 
-        # Bot message response
+        # Bot message response 
         with me.box(style=me.Style(display="flex", flex_direction="column")):
             me.markdown(
                 message.content,
@@ -322,12 +371,7 @@ def bot_message(*, message_index: int, message: ChatMessage):
                     tooltip="Bad response",
                     on_click=on_click_thumb_down,
                 )
-                # icon_button(
-                #     key=f"restart-{message_index}",
-                #     icon="restart_alt",
-                #     tooltip="Regenerate answer",
-                #     on_click=on_click_regenerate,
-                # )
+
 
 
 def chat_input():
@@ -379,6 +423,15 @@ def chat_input():
             type="icon",
         ):
             me.icon("send")
+            
+        with me.content_uploader(
+            disabled=state.in_progress,
+            accepted_file_types=["image/jpeg", "image/png"],
+            on_upload=submit_image,
+            type="icon",
+            style=me.Style(font_weight="bold"),
+        ):
+            me.icon("photo")
 
 
 @me.component
@@ -607,7 +660,44 @@ def _submit_chat_msg():
     me.focus_component(key="chat_input")
     yield
 
+def _convert_contents_data_url(file: me.UploadedFile) -> str:
+  return (
+    f"data:{file.mime_type};base64,{base64.b64encode(file.getvalue()).decode()}"
+  )
+  
+def submit_image(event: me.UploadEvent):
+    """Handles submitting an image."""
+    state = me.state(State)
+    if state.in_progress or not event.file:
+        return
+    image = event.file
+    state.uploadedimage= None
+    
+    output = state.output
+    if output is None:
+        output = []
+    output.append(ChatMessage(role="user", image=image))
+    print(output)
+    state.in_progress = True
+    me.scroll_into_view(key="scroll-to")
+    yield
 
+    # start_time = time.time()
+    # # Send user input and chat history to get the bot response.
+    # output_message = respond_to_chat(input, state.output)
+    # assistant_message = ChatMessage(role="bot")
+    # output.append(assistant_message)
+    # state.output = output
+    # for content in output_message:
+    #     assistant_message.content += content
+    #     # TODO: 0.25 is an abitrary choice. In the future, consider making this adjustable.
+    #     if (time.time() - start_time) >= 0.25:
+    #         start_time = time.time()
+    #         yield
+
+    # state.in_progress = False
+    # me.focus_component(key="chat_input")
+    # yield
 # Helpers
 
 
