@@ -5,7 +5,7 @@
 2. [Project Archtecture](#project-archtecture)
 
 ## How to test the pre-trained model
--This implementation can only be tested locally
--Copy the path of the image you would like to analyze
--Run the script in a venv environment using Visual Studio Code
--For better results, print only those predictions with the highest accuracy levels
+-This implementation can only be tested locally <br />
+-Copy the path of the image you would like to analyze <br />
+-Run the script in a venv environment using Visual Studio Code <br />
+-For better results, print only those predictions with the highest accuracy levels <br />
