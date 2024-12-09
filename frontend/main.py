@@ -67,7 +67,7 @@ def respond_to_chat(input: str, history: list[ChatMessage]):
         msg=response["messages"][-1]
         if hasattr(msg, 'content'):
             for l in msg.content:
-                time.sleep(0.005)
+                time.sleep(0.0005)
                 yield(l)
         elif isinstance(msg, tuple) and len(msg) == 2:
             yield(msg[1])
@@ -630,15 +630,23 @@ def _submit_chat_msg():
     state = me.state(State)
     if state.in_progress or not state.input:
         return
-    input = state.input
-    # Clear the text input.
-    state.input = ""
-    yield
-
+    
     output = state.output
     if output is None:
         output = []
+        
+    input = state.input
+    state.input = ""
     output.append(ChatMessage(role="user", content=input))
+        
+    if state.uploadedimage:
+        print("Image uploaded")
+        input = input + f" Image URL: {_convert_contents_data_url(state.uploadedimage)}"
+        state.uploadedimage = None
+        
+    # Clear the text input.
+    yield
+    
     state.in_progress = True
     me.scroll_into_view(key="scroll-to")
     yield
@@ -671,34 +679,15 @@ def submit_image(event: me.UploadEvent):
     if state.in_progress or not event.file:
         return
     image = event.file
-    state.uploadedimage= None
+    state.uploadedimage= image
+    
+    state.input= "identify the object in the image"
     
     output = state.output
     if output is None:
         output = []
     output.append(ChatMessage(role="user", image=image))
-    print(output)
-    state.in_progress = True
-    me.scroll_into_view(key="scroll-to")
-    yield
-
-    # start_time = time.time()
-    # # Send user input and chat history to get the bot response.
-    # output_message = respond_to_chat(input, state.output)
-    # assistant_message = ChatMessage(role="bot")
-    # output.append(assistant_message)
-    # state.output = output
-    # for content in output_message:
-    #     assistant_message.content += content
-    #     # TODO: 0.25 is an abitrary choice. In the future, consider making this adjustable.
-    #     if (time.time() - start_time) >= 0.25:
-    #         start_time = time.time()
-    #         yield
-
-    # state.in_progress = False
-    # me.focus_component(key="chat_input")
-    # yield
-# Helpers
+    yield _submit_chat_msg
 
 
 def _is_mobile():
