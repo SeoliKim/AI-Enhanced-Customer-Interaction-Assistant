@@ -66,7 +66,7 @@ To showcase this project
 
 ## Demo
 See a live demonstration of the AI Enhanced Customer Interaction Assistant:
-[demo](./demo.mp4)
+[![Demo](https://img.youtube.com/vi/cwUJoLJ2izo/maxresdefault.jpg)](https://youtu.be/cwUJoLJ2izo)
 ## Build With
 - **Frontend**: Mesop, Python
 - **Backend**: Langgraph, Langchain, Python, tool-binding, OpenAI API
